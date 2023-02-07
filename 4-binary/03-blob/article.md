@@ -14,10 +14,10 @@
 new Blob(blobParts, options);
 ```
 
-- **`blobParts`** 是 `Blob`/`BufferSource`/`String` 类型的值的数组。
-- **`options`** 可选对象：
-  - **`type`** —— `Blob` 类型，通常是 MIME 类型，例如 `image/png`，
-  - **`endings`** —— 是否转换换行符，使 `Blob` 对应于当前操作系统的换行符（`\r\n` 或 `\n`）。默认为 `"transparent"`（啥也不做），不过也可以是 `"native"`（转换）。
+* **`blobParts`** 是 `Blob`/`BufferSource`/`String` 类型的值的数组。
+* **`options`** 可选对象：
+  * **`type`** —— `Blob` 类型，通常是 MIME 类型，例如 `image/png`，
+  * **`endings`** —— 是否转换换行符，使 `Blob` 对应于当前操作系统的换行符（`\r` 或 ）。默认为 `"transparent"`（啥也不做），不过也可以是 `"native"`（转换）。
 
 例如：
 
@@ -34,24 +34,23 @@ let hello = new Uint8Array([72, 101, 108, 108, 111]); // 二进制格式的 "hel
 let blob = new Blob([hello, ' ', 'world'], {type: 'text/plain'});
 ```
 
-
 我们可以用 `slice` 方法来提取 `Blob` 片段：
 
 ```js
 blob.slice([byteStart], [byteEnd], [contentType]);
 ```
 
-- **`byteStart`** —— 起始字节，默认为 0。
-- **`byteEnd`** —— 最后一个字节（不包括，默认为最后）。
-- **`contentType`** —— 新 blob 的 `type`，默认与源 blob 相同。
+* **`byteStart`** —— 起始字节，默认为 0。
+* **`byteEnd`** —— 最后一个字节（不包括，默认为最后）。
+* **`contentType`** —— 新 blob 的 `type`，默认与源 blob 相同。
 
 参数值类似于 `array.slice`，也允许是负数。
 
-```smart header="`Blob` 对象是不可改变的"
-我们无法直接在 `Blob` 中更改数据，但我们可以通过 `slice` 获得 `Blob` 的多个部分，从这些部分创建新的 `Blob` 对象，将它们组成新的 `Blob`，等。
+\`\`\`smart header="`Blob` 对象是不可改变的" 我们无法直接在 `Blob` 中更改数据，但我们可以通过 `slice` 获得 `Blob` 的多个部分，从这些部分创建新的 `Blob` 对象，将它们组成新的 `Blob`，等。
 
 这种行为类似于 JavaScript 字符串：我们无法更改字符串中的字符，但可以生成一个新的改动过的字符串。
-```
+
+````
 
 ## Blob 用作 URL
 
@@ -70,13 +69,13 @@ let blob = new Blob(["Hello, world!"], {type: 'text/plain'});
 
 link.href = URL.createObjectURL(blob);
 </script>
-```
+````
 
 我们也可以在 Javascript 中动态创建一个链接，通过 `link.click()` 模拟一个点击，然后便自动下载了。
 
 下面是类似的代码，此代码可以让用户无需任何 HTML 即可下载动态生成的 `Blob`（译注：也就是通过代码模拟用户点击，从而自动下载）：
 
-```js run
+```js
 let link = document.createElement('a');
 link.download = 'hello.txt';
 
@@ -119,7 +118,7 @@ blob:https://javascript.info/1e67e00e-860d-40a5-89ae-6ab0cbee6273
 
 这种编码将二进制数据表示为一个由 0 到 64 的 ASCII 码组成的字符串，非常安全且“可读“。更重要的是 —— 我们可以在 "data-url" 中使用此编码。
 
-["data-url"](mdn:/http/Data_URIs) 的形式为 `data:[<mediatype>][;base64],<data>`。我们可以在任何地方使用这种 url，和使用“常规” url 一样。
+["data-url"](https://mdn/http/Data\_URIs) 的形式为 `data:[<mediatype>][;base64],<data>`。我们可以在任何地方使用这种 url，和使用“常规” url 一样。
 
 例如，这是一个笑脸：
 
@@ -127,14 +126,13 @@ blob:https://javascript.info/1e67e00e-860d-40a5-89ae-6ab0cbee6273
 <img src="data:image/png;base64,R0lGODlhDAAMAKIFAF5LAP/zxAAAANyuAP/gaP///wAAAAAAACH5BAEAAAUALAAAAAAMAAwAAAMlWLPcGjDKFYi9lxKBOaGcF35DhWHamZUW0K4mAbiwWtuf0uxFAgA7">
 ```
 
-浏览器将解码该字符串，并显示图像：<img src="data:image/png;base64,R0lGODlhDAAMAKIFAF5LAP/zxAAAANyuAP/gaP///wAAAAAAACH5BAEAAAUALAAAAAAMAAwAAAMlWLPcGjDKFYi9lxKBOaGcF35DhWHamZUW0K4mAbiwWtuf0uxFAgA7">
-
+浏览器将解码该字符串，并显示图像：![](data:image/png;base64,R0lGODlhDAAMAKIFAF5LAP/zxAAAANyuAP/gaP///wAAAAAAACH5BAEAAAUALAAAAAAMAAwAAAMlWLPcGjDKFYi9lxKBOaGcF35DhWHamZUW0K4mAbiwWtuf0uxFAgA7)
 
 我们使用内建的 `FileReader` 对象来将 `Blob` 转换为 base64。它可以将 `Blob` 中的数据读取为多种格式。在[下一章](info:file) 我们将更深入地介绍它。
 
 下面是下载 `Blob` 的示例，这次是通过 base-64：
 
-```js run
+```js
 let link = document.createElement('a');
 link.download = 'hello.txt';
 
@@ -153,7 +151,7 @@ reader.onload = function() {
 
 这两种从 `Blob` 创建 URL 的方法都可以用。但通常 `URL.createObjectURL(blob)` 更简单快捷。
 
-```compare title-plus="URL.createObjectURL(blob)" title-minus="Blob 转换为 data url"
+```compare
 + 如果介意内存，我们需要撤销（revoke）它们
 + 直接访问 `Blob`，无需“编码/解码”
 - 无需撤销（revoke）任何操作。
@@ -166,12 +164,12 @@ reader.onload = function() {
 
 图像操作是通过 `<canvas>` 元素来实现的：
 
-1. 使用 [canvas.drawImage](mdn:/api/CanvasRenderingContext2D/drawImage) 在 canvas 上绘制图像（或图像的一部分）。
-2. 调用 canvas 方法 [.toBlob(callback, format, quality)](mdn:/api/HTMLCanvasElement/toBlob) 创建一个 `Blob`，并在创建完成后使用其运行 `callback`。
+1. 使用 [canvas.drawImage](https://mdn/api/CanvasRenderingContext2D/drawImage) 在 canvas 上绘制图像（或图像的一部分）。
+2. 调用 canvas 方法 [.toBlob(callback, format, quality)](https://mdn/api/HTMLCanvasElement/toBlob) 创建一个 `Blob`，并在创建完成后使用其运行 `callback`。
 
 在下面这个示例中，图像只是被复制了，不过我们可以在创建 blob 之前，从中裁剪图像，或者在 canvas 上对其进行转换：
 
-```js run
+```js
 // 获取任何图像
 let img = document.querySelector('img');
 
@@ -201,11 +199,12 @@ canvas.toBlob(function(blob) {
 ```
 
 如果我们更喜欢 `async/await` 而不是 callback：
+
 ```js
 let blob = await new Promise(resolve => canvasElem.toBlob(resolve, 'image/png'));
 ```
 
-对于页面截屏，我们可以使用诸如 <https://github.com/niklasvh/html2canvas> 之类的库。它所做的只是扫一遍浏览器页面，并将其绘制在 `<canvas>` 上。然后，我们就可以像上面一样获取一个它的 `Blob`。
+对于页面截屏，我们可以使用诸如 [https://github.com/niklasvh/html2canvas](https://github.com/niklasvh/html2canvas) 之类的库。它所做的只是扫一遍浏览器页面，并将其绘制在 `<canvas>` 上。然后，我们就可以像上面一样获取一个它的 `Blob`。
 
 ## Blob 转换为 ArrayBuffer
 
@@ -225,9 +224,9 @@ blob.arrayBuffer().then(buffer => /* 处理 ArrayBuffer */);
 
 当我们读取和写入超过 `2 GB` 的 blob 时，将其转换为 `arrayBuffer` 的使用对我们来说会更加占用内存。这种情况下，我们可以直接将 blob 转换为 stream 进行处理。
 
-stream 是一种特殊的对象，我们可以从它那里逐部分地读取（或写入）。这块的知识点不在本文的范围之内，但这里有一个例子，你可以在 <https://developer.mozilla.org/en-US/docs/Web/API/Streams_API> 了解更多相关内容。对于适合逐段处理的数据，使用 stream 是很方便的。
+stream 是一种特殊的对象，我们可以从它那里逐部分地读取（或写入）。这块的知识点不在本文的范围之内，但这里有一个例子，你可以在 [https://developer.mozilla.org/en-US/docs/Web/API/Streams\_API](https://developer.mozilla.org/en-US/docs/Web/API/Streams\_API) 了解更多相关内容。对于适合逐段处理的数据，使用 stream 是很方便的。
 
-`Blob` 接口里的 `stream()` 方法返回一个 `ReadableStream`，在被读取时可以返回 `Blob` 中包含的数据。 
+`Blob` 接口里的 `stream()` 方法返回一个 `ReadableStream`，在被读取时可以返回 `Blob` 中包含的数据。
 
 如下所示：
 
@@ -260,7 +259,7 @@ while (true) {
 
 我们可以轻松地在 `Blob` 和低级别的二进制数据类型之间进行转换：
 
-- 我们可以使用 `new Blob(...)` 构造函数从一个类型化数组（typed array）创建 `Blob`。
-- 我们可以使用 `blob.arrayBuffer()` 从 `Blob` 中取回 `arrayBuffer`，然后在其上创建一个视图（view），用于低级别的二进制处理。
+* 我们可以使用 `new Blob(...)` 构造函数从一个类型化数组（typed array）创建 `Blob`。
+* 我们可以使用 `blob.arrayBuffer()` 从 `Blob` 中取回 `arrayBuffer`，然后在其上创建一个视图（view），用于低级别的二进制处理。
 
 当我们需要处理大型 blob 时，将其转换为 `stream` 非常有用。你可以轻松地从 blob 创建 `ReadableStream`。`Blob` 接口的 `stream()` 方法返回一个 `ReadableStream`，其在被读取时返回 blob 中包含的数据。

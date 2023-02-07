@@ -10,7 +10,7 @@
 
 在这个有多行文本的例子中，模式 `/^\d/gm` 将从每行的开头取一个数字：
 
-```js run
+```js
 let str = `1st place: Winnie
 2nd place: Piglet
 3rd place: Eeyore`;
@@ -22,7 +22,7 @@ console.log( str.match(/^\d/gm) ); // 1, 2, 3
 
 没有修饰符 `pattern:m` 时，仅会匹配第一个数字：
 
-```js run
+```js
 let str = `1st place: Winnie
 2nd place: Piglet
 3rd place: Eeyore`;
@@ -46,7 +46,7 @@ console.log( str.match(/^\d/g) ); // 1
 
 正则表达式 `pattern:\d$` 寻找每行的最后一个数字
 
-```js run
+```js
 let str = `Winnie: 1
 Piglet: 2
 Eeyore: 3`;
@@ -64,13 +64,13 @@ console.log( str.match(/\d$/gm) ); // 1,2,3
 
 ## 搜索 \n 而不是 ^ $
 
-要寻找新的一行，我们不仅可以使用锚点 `pattern:^` 和 `pattern:$`，也可以使用换行符 `\n`。
+要寻找新的一行，我们不仅可以使用锚点 `pattern:^` 和 `pattern:$`，也可以使用换行符 。
 
 区别是什么？让我们看个例子。
 
-在这里我们使用 `pattern:\d\n` 进行搜索，而不是使用 `pattern:\d$`：
+在这里我们使用 `pattern:\d` 进行搜索，而不是使用 `pattern:\d$`：
 
-```js run
+```js
 let str = `Winnie: 1
 Piglet: 2
 Eeyore: 3`;
@@ -82,6 +82,6 @@ console.log( str.match(/\d\n/g) ); // 1\n,2\n
 
 这是因为在 `subject:3` 之后没有换行符（但是有文本末尾，所以它匹配 `pattern:$`）。
 
-另一个区别是，现在每个匹配项都包含一个换行符 `match:\n`。与锚点 `pattern:^` `pattern:$` 不同，锚点只测试条件（行的开始/末尾），而 `\n` 是一个字符，因此它成为了结果的一部分。
+另一个区别是，现在每个匹配项都包含一个换行符 `match:`。与锚点 `pattern:^` `pattern:$` 不同，锚点只测试条件（行的开始/末尾），而  是一个字符，因此它成为了结果的一部分。
 
-因此，当我们需要结果中有换行符时，使用 `\n`。而锚点则用于在行的开头/末尾查找某些内容。
+因此，当我们需要结果中有换行符时，使用 。而锚点则用于在行的开头/末尾查找某些内容。

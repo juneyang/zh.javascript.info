@@ -6,11 +6,11 @@
 
 但是两者之间有几个重要的区别：
 
-| `WebSocket` | `EventSource` |
-|-------------|---------------|
-| 双向：客户端和服务端都能交换消息 | 单向：仅服务端能发送消息 |
-| 二进制和文本数据 | 仅文本数据 |
-| WebSocket 协议 | 常规 HTTP 协议 |
+| `WebSocket`      | `EventSource` |
+| ---------------- | ------------- |
+| 双向：客户端和服务端都能交换消息 | 单向：仅服务端能发送消息  |
+| 二进制和文本数据         | 仅文本数据         |
+| WebSocket 协议     | 常规 HTTP 协议    |
 
 与 `WebSocket` 相比，`EventSource` 是与服务器通信的一种不那么强大的方式。
 
@@ -37,11 +37,11 @@ data: Message 3
 data: of two lines
 ```
 
-- `data:` 后为消息文本，冒号后面的空格是可选的。
-- 消息以双换行符 `\n\n` 分隔。
-- 要发送一个换行 `\n`，我们可以在要换行的位置立即再发送一个 `data:`（上面的第三条消息）。
+* `data:` 后为消息文本，冒号后面的空格是可选的。
+* 消息以双换行符 `\n` 分隔。
+* 要发送一个换行 ，我们可以在要换行的位置立即再发送一个 `data:`（上面的第三条消息）。
 
-在实际开发中，复杂的消息通常是用 JSON 编码后发送。换行符在其中编码为 `\n`，因此不需要多行 `data:` 消息。
+在实际开发中，复杂的消息通常是用 JSON 编码后发送。换行符在其中编码为 ，因此不需要多行 `data:` 消息。
 
 例如：
 
@@ -82,8 +82,7 @@ let source = new EventSource("https://another-site.com/events", {
 });
 ```
 
-更多关于跨源 header 的详细内容，请参见 <info:fetch-crossorigin>。
-
+更多关于跨源 header 的详细内容，请参见 [info:fetch-crossorigin](info:fetch-crossorigin)。
 
 ## 重新连接
 
@@ -104,8 +103,8 @@ data: Hello, I set the reconnection delay to 15 seconds
 
 在重新连接之前，浏览器需要等待那么多毫秒。甚至更长，例如，如果浏览器知道（从操作系统）此时没有网络连接，它会等到连接出现，然后重试。
 
-- 如果服务器想要浏览器停止重新连接，那么它应该使用 HTTP 状态码 204 进行响应。
-- 如果浏览器想要关闭连接，则应该调用 `eventSource.close()`：
+* 如果服务器想要浏览器停止重新连接，那么它应该使用 HTTP 状态码 204 进行响应。
+* 如果浏览器想要关闭连接，则应该调用 `eventSource.close()`：
 
 ```js
 let eventSource = new EventSource(...);
@@ -139,12 +138,12 @@ id: 3
 
 当收到具有 `id` 的消息时，浏览器会：
 
-- 将属性 `eventSource.lastEventId` 设置为其值。
-- 重新连接后，发送带有 `id` 的 header `Last-Event-ID`，以便服务器可以重新发送后面的消息。
+* 将属性 `eventSource.lastEventId` 设置为其值。
+* 重新连接后，发送带有 `id` 的 header `Last-Event-ID`，以便服务器可以重新发送后面的消息。
 
-```smart header="把 `id:` 放在 `data:` 后"
-请注意：`id` 被服务器附加到 `data` 消息后，以确保在收到消息后 `lastEventId` 会被更新。
-```
+\`\`\`smart header="把 `id:` 放在 `data:` 后" 请注意：`id` 被服务器附加到 `data` 消息后，以确保在收到消息后 `lastEventId` 会被更新。
+
+````
 
 ## 连接状态：readyState
 
@@ -154,7 +153,7 @@ id: 3
 EventSource.CONNECTING = 0; // 连接中或者重连中
 EventSource.OPEN = 1;       // 已连接
 EventSource.CLOSED = 2;     // 连接已关闭
-```
+````
 
 对象创建完成或者连接断开后，它始终是 `EventSource.CONNECTING`（等于 `0`）。
 
@@ -164,9 +163,9 @@ EventSource.CLOSED = 2;     // 连接已关闭
 
 默认情况下 `EventSource` 对象生成三个事件：
 
-- `message` —— 收到消息，可以用 `event.data` 访问。
-- `open` —— 连接已打开。
-- `error` —— 无法建立连接，例如，服务器返回 HTTP 500 状态码。
+* `message` —— 收到消息，可以用 `event.data` 访问。
+* `open` —— 连接已打开。
+* `error` —— 无法建立连接，例如，服务器返回 HTTP 500 状态码。
 
 服务器可以在事件开始时使用 `event: ...` 指定另一种类型事件。
 
@@ -204,16 +203,17 @@ eventSource.addEventListener('leave', event => {
 
 然后浏览器会自动重新连接。
 
-[codetabs src="eventsource"]
+\[codetabs src="eventsource"]
 
 ## 总结
 
 `EventSource` 对象自动建立一个持久的连接，并允许服务器通过这个连接发送消息。
 
 它提供了：
-- 在可调的 `retry` 超时内自动重新连接。
-- 用于恢复事件的消息 id，重新连接后，最后接收到的标识符被在 `Last-Event-ID` header 中发送出去。
-- 当前状态位于 `readyState` 属性中。
+
+* 在可调的 `retry` 超时内自动重新连接。
+* 用于恢复事件的消息 id，重新连接后，最后接收到的标识符被在 `Last-Event-ID` header 中发送出去。
+* 当前状态位于 `readyState` 属性中。
 
 这使得 `EventSource` 成为 `WebSocket` 的一个可行的替代方案，因为 `WebSocket` 更底层（low-level），且缺乏这样的内建功能（尽管它们可以被实现）。
 
@@ -233,39 +233,33 @@ let source = new EventSource(url, [credentials]);
 
 ### `EventSource` 对象的属性
 
-`readyState`
-: 当前连接状态：为 `EventSource.CONNECTING (=0)`，`EventSource.OPEN (=1)`，`EventSource.CLOSED (=2)` 三者之一。
+`readyState` : 当前连接状态：为 `EventSource.CONNECTING (=0)`，`EventSource.OPEN (=1)`，`EventSource.CLOSED (=2)` 三者之一。
 
-`lastEventId`
-: 最后接收到的 `id`。重新连接后，浏览器在 header `Last-Event-ID` 中发送此 id。
+`lastEventId` : 最后接收到的 `id`。重新连接后，浏览器在 header `Last-Event-ID` 中发送此 id。
 
 ### `EventSource` 对象的方法
 
-`close()`
-: 关闭连接。
+`close()` : 关闭连接。
 
 ### `EventSource` 对象的事件
 
-`message`
-: 接收到的消息，消息数据在 `event.data` 中。
+`message` : 接收到的消息，消息数据在 `event.data` 中。
 
-`open`
-: 连接已建立。
+`open` : 连接已建立。
 
-`error`
-: 如果发生错误，包括连接丢失（将会自动重连）以及其他致命错误。我们可以检查 `readyState` 以查看是否正在尝试重新连接。
+`error` : 如果发生错误，包括连接丢失（将会自动重连）以及其他致命错误。我们可以检查 `readyState` 以查看是否正在尝试重新连接。
 
 服务器可以在 `event:` 中设置自定义事件名称。应该使用 `addEventListener` 来处理此类事件，而不是使用 `on<event>`。
 
 ### 服务器响应格式
 
-服务器发送由 `\n\n` 分隔的消息。
+服务器发送由 `\n` 分隔的消息。
 
 一条消息可能有以下字段：
 
-- `data:` —— 消息体（body），一系列多个 `data` 被解释为单个消息，各个部分之间由 `\n` 分隔。
-- `id:` —— 更新 `lastEventId`，重连时以 `Last-Event-ID` 发送此 id。
-- `retry:` —— 建议重连的延迟，以 ms 为单位。无法通过 JavaScript 进行设置。
-- `event:` —— 事件名，必须在 `data:` 之前。
+* `data:` —— 消息体（body），一系列多个 `data` 被解释为单个消息，各个部分之间由  分隔。
+* `id:` —— 更新 `lastEventId`，重连时以 `Last-Event-ID` 发送此 id。
+* `retry:` —— 建议重连的延迟，以 ms 为单位。无法通过 JavaScript 进行设置。
+* `event:` —— 事件名，必须在 `data:` 之前。
 
 一条消息可以按任何顺序包含一个或多个字段，但是 `id:` 通常排在最后。
